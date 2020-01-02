@@ -14,7 +14,7 @@ let createEmployeeRecords = (arr) => {
     return arr.map(array => createEmployeeRecord(array))
 }
 
-let createTimeInEvent = (dateStamp) => {
+let createTimeInEvent = function(dateStamp) {
     let arr = dateStamp.split(' ')
     let time = arr.last
     let myDate = arr.first
@@ -24,8 +24,8 @@ let createTimeInEvent = (dateStamp) => {
         hour: parseInt(time),
         date: myDate
     })
-
-    console.log(this)
+        
+    return this
 }
 
 

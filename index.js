@@ -1,4 +1,53 @@
-/* Your Code Here */
+let createEmployeeRecord = (arr) => {
+    return {
+        firstName: arr[0],
+        familyName: arr[1],
+        title: arr[2],
+        payPerHour: arr[3],
+        timeInEvents: [],
+        timeOutEvents: []
+    }
+}
+
+// takes in array of employee objects to create a record for each one
+let createEmployeeRecords = (arr) => {
+    return arr.map(array => createEmployeeRecord(array))
+}
+
+let createTimeInEvent = (dateStamp) => {
+    let arr = dateStamp.split(' ')
+    let time = arr.last
+    let myDate = arr.first
+
+    this.timeInEvents.push({
+        type: "TimeIn",
+        hour: parseInt(time),
+        date: myDate
+    })
+
+    console.log(this)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
  We're giving you this function. Take a look at it, you might see some usage

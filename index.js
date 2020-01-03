@@ -1,22 +1,85 @@
-/* Your Code Here */
+const createEmployeeRecord = function(employeeDetails) {
+  const [firstName, familyName, title, payPerHour] = employeeDetails;
 
-/*
- We're giving you this function. Take a look at it, you might see some usage
- that's new and different. That's because we're avoiding a well-known, but
- sneaky bug that we'll cover in the next few lessons!
+  const employeeObj = {
+    firstName: firstName,
+    familyName: familyName,
+    title: title,
+    payPerHour: payPerHour,
+    timeInEvents: [],
+    timeOutEvents: []
+  };
 
- As a result, the lessons for this function will pass *and* it will be available
- for you to use if you need it!
- */
+  return employeeObj;
+};
 
-let allWagesFor = function () {
+const createEmployeeRecords = function(nestedEmployeeDetails) {
+  return nestedEmployeeDetails.map(function(employeeDetails) {
+    return createEmployeeRecord(employeeDetails);
+  });
+};
+
+const createTimeInEvent = function(timeStampIn) {
+  const timeInObj = {};
+  const [date, time] = timeStampIn.split(' ');
+
+  timeInObj.type = "TimeIn";
+  timeInObj.hour = parseInt(time, 10);
+  timeInObj.date = date;
+
+  this.timeInEvents.push(timeInObj);
+
+  return Object.assign({}, this);
+};
+
+const createTimeOutEvent = function(timeStampOut) {
+  const timeOutObj = {};
+  const [date, time] = timeStampOut.split(' ');
+
+  timeOutObj.type = "TimeOut";
+  timeOutObj.hour = parseInt(time, 10);
+  timeOutObj.date = date;
+
+  this.timeOutEvents.push(timeOutObj);
+
+  return Object.assign({}, this);
+};
+
+const hoursWorkedOnDate = function(date) {
+  let timeInEvent = this.timeInEvents.find(function(event) {
+    return event.date === date;
+  });
+
+  let timeOutEvent = this.timeOutEvents.find(function(event) {
+    return event.date === date;
+  });
+
+  return (timeOutEvent.hour - timeInEvent.hour) / 100;
+};
+
+const wagesEarnedOnDate = function(date) {
+  const hoursWorked = hoursWorkedOnDate.call(this, date);
+  return hoursWorked * this.payPerHour;
+};
+
+const allWagesFor = function() {
     let eligibleDates = this.timeInEvents.map(function (e) {
-        return e.date
-    })
+        return e.date;
+    });
 
-    let payable = eligibleDates.reduce(function (memo, d) {
-        return memo + wagesEarnedOnDate.call(this, d)
-    }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
+    let payable = eligibleDates.reduce(function (memo, date) {
+        return memo + wagesEarnedOnDate.call(this, date)
+    }.bind(this), 0);
 
-    return payable
-}
+    return payable;
+};
+
+const calculatePayroll = (employeeRecords) => {
+  return employeeRecords.reduce(function(total, employee) {
+    return total + allWagesFor.call(employee);
+  }, 0);
+};
+
+const findEmployeeByFirstName = (employeeRecords, name) => {
+  return employeeRecords.find(record => record.firstName === name);
+};

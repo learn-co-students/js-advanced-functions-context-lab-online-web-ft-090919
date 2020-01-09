@@ -24,8 +24,6 @@ function createEmployeeRecords(arrayofArrays) {
   return arrayofArrays.map(recordData => createEmployeeRecord(recordData));
 }
 
-function createTimeInEvent() {}
-
 let allWagesFor = function() {
   let eligibleDates = this.timeInEvents.map(function(e) {
     return e.date;
@@ -40,3 +38,27 @@ let allWagesFor = function() {
 
   return payable;
 };
+
+let createTimeInEvent = function(dateStamp) {
+  let [date, hour] = dateStamp.split(" ");
+
+  this.timeInEvents.push({
+    type: "TimeIn",
+    hour: parseInt(hour, 10),
+    date
+  });
+
+  return this;
+};
+
+
+function createTimeOutEvent(dateStamp){
+    let [date, hour] = dateStamp.split(" ")
+    
+    this.timeOutEvents.push({
+        type: "TimeOut",
+        hour: parseInt(hour, ,10),
+        date
+    })
+    return this
+}

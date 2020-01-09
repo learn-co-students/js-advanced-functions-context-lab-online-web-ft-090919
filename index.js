@@ -94,7 +94,7 @@ let allWagesFor = function () {
 
 function calculatePayroll(data){
     return data.reduce(function(total, day){
-        return memo + allWagesFor.call(day)
+        return total + allWagesFor.call(day)
     }, 0)
 }
 

@@ -8,15 +8,29 @@
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
  */
-
-let allWagesFor = function () {
-    let eligibleDates = this.timeInEvents.map(function (e) {
-        return e.date
-    })
-
-    let payable = eligibleDates.reduce(function (memo, d) {
-        return memo + wagesEarnedOnDate.call(this, d)
-    }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
-
-    return payable
+function createEmployeeRecord(array) {
+  output = {
+    firstName: array[0],
+    familyName: array[1],
+    title: array[2],
+    payPerHour: array[3]
+    timeInEvents: Array.new()
+    timeOutEvents: Array.new()
+  };
+  return output;
 }
+
+let allWagesFor = function() {
+  let eligibleDates = this.timeInEvents.map(function(e) {
+    return e.date;
+  });
+
+  let payable = eligibleDates.reduce(
+    function(memo, d) {
+      return memo + wagesEarnedOnDate.call(this, d);
+    }.bind(this),
+    0
+  ); // <== Hm, why did we need to add bind() there? We'll discuss soon!
+
+  return payable;
+};

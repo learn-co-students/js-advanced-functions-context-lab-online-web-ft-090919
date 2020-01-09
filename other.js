@@ -27,40 +27,40 @@ function createEmployeeRecords(info) {
 
 }
 
-function createTimeInEvent(timeIn) {
+function createTimeInEvent(employee, timeIn) {
 
   let [date, time] = timeIn.split(' ')
-  this.timeInEvents.push({
+  employee.timeInEvents.push({
     type: "TimeIn",
     hour: parseInt(time, 10),
     date,
   })
 
-  return this
+  return employee
 
 }
 
-function createTimeOutEvent(timeOut) {
+function createTimeOutEvent(employee, timeOut) {
 
   let [date, time] = timeOut.split(' ')
-  this.timeOutEvents.push({
+  employee.timeOutEvents.push({
     type: "TimeOut",
     hour: parseInt(time, 10),
     date,
   })
 
-  return this
+  return employee
 
 }
 
 
-function hoursWorkedOnDate(date) {
+function hoursWorkedOnDate(employee, date) {
 
-  let inD = this.timeInEvents.find(function(e) {
+  let inD = employee.timeInEvents.find(function(e) {
     return e.date === date
   })
 
-  let outD = this.timeOutEvents.find(function(e) {
+  let outD = employee.timeOutEvents.find(function(e) {
     return (e.date === date)
 
   })
@@ -68,34 +68,26 @@ function hoursWorkedOnDate(date) {
   return (outD.hour - inD.hour) / 100
 }
 
-function wagesEarnedOnDate(date) {
-  let wagesDay = hoursWorkedOnDate.call(this, date)
-  return (wagesDay * this.payPerHour)
+function wagesEarnedOnDate(employee, date) {
+  let wagesDay = hoursWorkedOnDate(employee, date)
+  return (wagesDay * employee.payPerHour)
 }
 
+function allWagesFor(employee) {
+  let allDates = employee.timeInEvents.map(function(e) {
+    return e.date
+  })
 
-let allWagesFor = function () {
-    let eligibleDates = this.timeInEvents.map(function (e) {
-        return e.date
-    })
-
-    let payable = eligibleDates.reduce(function (memo, d) {
-        return memo + wagesEarnedOnDate.call(this, d)
-    }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
-
-    return payable
+  let pay = allDates.reduce(function(all, day) {
+    return all + wagesEarnedOnDate(employee, day)
+  }, 0)
+  return pay
 }
 
-// function calculatePayroll(data) {
-//   return data.reduce(function(employees) {
-//     return employees + allWagesFor(this)
-//   }, 0)
-// }
-
-function calculatePayroll(data){
-    return data.reduce(function(memo, rec){
-        return memo + allWagesFor.call(rec)
-    }, 0)
+function calculatePayroll(data) {
+  return data.reduce(function(employees, employee) {
+    return employees + allWagesFor(employee)
+  }, 0)
 }
 
 let findEmployeeByFirstName = function(srcArray, firstName) {
